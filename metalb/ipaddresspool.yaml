@@ -1,0 +1,40 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+ name: production-public-ips
+ namespace: metallb-system
+spec:
+ addresses:
+ - 165.22.242.243/32
+ - 165.22.241.95/32
+ - 68.183.178.26/32
+
+---
+
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+ name: production-public-ips
+ namespace: metallb-system
+spec:
+  ipAddressPools:
+  - production-public-ips
+  aggregationLength: 32
+  localPref: 100
+  communities:
+  - 65535:65282
+  peers:
+  - bgp-peer-80
+
+---
+
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: bgp-peer-80
+  namespace: metallb-system
+spec:
+  myASN: 64512
+  peerASN: 64512
+  peerAddress: 165.22.242.243
+  peerPort: 80
