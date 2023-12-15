@@ -1,0 +1,56 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: paopao
+      MYSQL_USER: paopao
+      MYSQL_PASSWORD: paopao
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    volumes:
+      - ./scripts/paopao-mysql.sql:/docker-entrypoint-initdb.d/paopao.sql
+    ports:
+      - 30172:3306
+    networks:
+      - paopao-network
+
+  minio:
+    image: bitnami/minio:latest
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minio-root-user
+      MINIO_ROOT_PASSWORD: minio-root-password
+      MINIO_DEFAULT_BUCKETS: paopao:public
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+    networks:
+      - paopao-network
+
+  redis:
+    image: redis/redis-stack:7.2.0-v2
+    restart: always
+    ports:
+      - 6365:6379
+      - 8001:8001
+    environment:
+      REDISEARCH_ARGS: "MAXSEARCHRESULTS 5"
+    networks:
+      - paopao-network
+
+  meili:
+    image: getmeili/meilisearch:v1.4
+    restart: always
+    ports:
+      - 7700:7700
+    environment:
+      - MEILI_MASTER_KEY=paopao-meilisearch
+    networks:
+      - paopao-network
+
+networks:
+  paopao-network:
+      driver: bridge

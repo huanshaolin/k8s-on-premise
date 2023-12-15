@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-paopao
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: mysql-paopao
+    app.kubernetes.io/instance: mysql-paopao
+    app.kubernetes.io/version: "1.2.0"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: mysql-port
+      protocol: TCP
+      name: mysql-port
+  selector:
+    app.kubernetes.io/name: mysql-paopao
+    app.kubernetes.io/instance: mysql-paopao

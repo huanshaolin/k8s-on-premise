@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-paopao
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: redis-paopao
+    app.kubernetes.io/instance: redis-paopao
+    app.kubernetes.io/version: "1.2.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis-paopao
+      app.kubernetes.io/instance: redis-paopao
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis-paopao
+        app.kubernetes.io/instance: redis-paopao
+    spec:
+      serviceAccountName: redis-paopao
+      securityContext:
+        {}
+      containers:
+        - name:  redis-paopao
+          securityContext:
+            {}
+          image: redis:7.2.1-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+              name: redis
+              protocol: TCP

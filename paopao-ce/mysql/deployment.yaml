@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-paopao
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: mysql-paopao
+    app.kubernetes.io/instance: mysql-paopao
+    app.kubernetes.io/version: "1.2.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mysql-paopao
+      app.kubernetes.io/instance: mysql-paopao
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mysql-paopao
+        app.kubernetes.io/instance: mysql-paopao
+    spec:
+      serviceAccountName: mysql-paopao
+      securityContext:
+        {}
+      containers:
+        - name:  mysql-paopao
+          securityContext:
+            {}
+          image: mysql:8.0
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: MYSQL_DATABASE
+            value: paopao
+          - name: MYSQL_USER
+            value: paopao
+          - name: MYSQL_PASSWORD
+            value: "paopao"
+          - name: MYSQL_RANDOM_ROOT_PASSWORD
+            value: "yes"
+          ports:
+            - containerPort: 3306
+              name: mysql-port
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/paopao.sql
+              name: sql-script
+              subPath: paopao.sql
+      volumes:
+        - configMap:
+            items:
+            - key: paopao-mysql.sql
+              path: paopao.sql
+            name: sql-script
+          name: sql-script
