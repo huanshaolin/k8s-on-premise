@@ -10,7 +10,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 7700
+    - port: 6379
       targetPort: redis
       protocol: TCP
       name: redis

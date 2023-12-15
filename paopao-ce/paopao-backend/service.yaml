@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: paopao-backend
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: paopao-backend
+    app.kubernetes.io/instance: paopao-backend
+    app.kubernetes.io/version: "1.2.0"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8008
+      targetPort: web-api
+      protocol: TCP
+      name: web-api
+  selector:
+    app.kubernetes.io/name: paopao-backend
+    app.kubernetes.io/instance: paopao-backend

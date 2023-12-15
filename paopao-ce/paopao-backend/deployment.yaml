@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paopao-backend
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: paopao-backend
+    app.kubernetes.io/instance: paopao-backend
+    app.kubernetes.io/version: "1.2.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: paopao-backend
+      app.kubernetes.io/instance: paopao-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: paopao-backend
+        app.kubernetes.io/instance: paopao-backend
+    spec:
+      serviceAccountName: paopao-backend
+      securityContext:
+        {}
+      containers:
+        - name:  paopao-backend
+          securityContext:
+            {}
+          image: bitbus/paopao-ce:0.5
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8008
+            name: web-api
+            protocol: TCP
+          volumeMounts:
+            - mountPath: /app/paopao-ce/config.yaml
+              name: paopao-cm
+              subPath: config.yaml
+      volumes:
+        - configMap:
+            items:
+            - key: config.yaml
+              path: config.yaml
+            name: paopao-cm
+          name: paopao-cm
