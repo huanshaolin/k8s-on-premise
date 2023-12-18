@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: paopao-web
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: paopao-web
+    app.kubernetes.io/instance: paopao-web
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: 5m
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "huanshaolin.click"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: paopao-web
+                port:
+                  number: 8080

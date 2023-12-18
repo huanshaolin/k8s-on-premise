@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paopao-web
+  namespace: paopao-app
+  labels:
+    app.kubernetes.io/name: paopao-web
+    app.kubernetes.io/instance: paopao-web
+    app.kubernetes.io/version: "1.2.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: paopao-web
+      app.kubernetes.io/instance: paopao-web
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: paopao-web
+        app.kubernetes.io/instance: paopao-web
+    spec:
+      serviceAccountName: paopao-web
+      securityContext:
+        {}
+      containers:
+        - name:  paopao-web
+          securityContext:
+            {}
+          image: hoanghao11/paopao-web:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 80
+            name: http
+            protocol: TCP

@@ -153,3 +153,6 @@ $ helm repo add bitnami https://charts.bitnami.com/bitnami
 $ helm search repo bitnami
 $ helm install my-release bitnami/<chart>
 ```
+
+
+### 5. Start run app with paopap ce
