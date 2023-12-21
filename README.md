@@ -4,6 +4,8 @@
     2 vps server 2cpu, 4gb RAM, Ubuntu Server 20.04 LTS
     helm command line version >= 3.8
 
+Note: this tuorial, will use kubernetes version 1.27, cilium network 1.14
+
 ### 1.2. Setup environment k8s
 Every node, we need to run command below:
 ```sh
