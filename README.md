@@ -158,3 +158,6 @@ $ helm install my-release bitnami/<chart>
 
 
 ### 5. Start run app with paopap ce
+
+--add
+https://github.com/etcd-io/etcd/issues/13670
